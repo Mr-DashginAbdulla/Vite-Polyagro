@@ -1,0 +1,21 @@
+{
+  "login": "Daxil ol",
+  "register": "Qeydiyyat",
+  "email": "E-poçt",
+  "password": "Şifrə",
+  "confirmPassword": "Şifrə Təkrar",
+  "fullName": "Ad Soyad",
+  "rememberMe": "Məni xatırla",
+  "forgotPassword": "Şifrəmi unutdum",
+  "continueWith": "və ya ilə davam et",
+  "emailRequired": "E-poçt tələb olunur",
+  "passwordRequired": "Şifrə tələb olunur",
+  "nameRequired": "Ad Soyad tələb olunur",
+  "passwordMismatch": "Şifrələr uyğun gəlmir",
+  "emailExists": "Bu e-poçt artıq qeydiyyatdan keçib",
+  "emailInvalid": "Yanlış e-poçt formatı",
+  "invalidCredentials": "Yanlış e-poçt və ya şifrə",
+  "passwordMinLength": "Şifrə minimum 8 simvol olmalıdır",
+  "passwordCase": "Şifrədə böyük və kiçik hərflər olmalıdır",
+  "passwordNumber": "Şifrədə rəqəm olmalıdır"
+} 

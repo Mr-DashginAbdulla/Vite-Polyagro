@@ -1,0 +1,19 @@
+{
+  "login": "Войти",
+  "register": "Регистрация",
+  "email": "Эл. почта",
+  "password": "Пароль",
+  "confirmPassword": "Подтвердите пароль",
+  "fullName": "Полное имя",
+  "rememberMe": "Запомнить меня",
+  "forgotPassword": "Забыли пароль?",
+  "continueWith": "или продолжить с",
+  "emailRequired": "Требуется эл. почта",
+  "passwordRequired": "Требуется пароль",
+  "nameRequired": "Требуется полное имя",
+  "passwordMismatch": "Пароли не совпадают",
+  "emailExists": "Эта эл. почта уже зарегистрирована",
+  "emailInvalid": "Введите действительный адрес эл. почты",
+  "passwordInvalid": "Пароль должен содержать не менее 6 символов",
+  "invalidCredentials": "Неверная эл. почта или пароль"
+} 

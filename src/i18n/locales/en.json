@@ -1,0 +1,19 @@
+{
+  "login": "Login",
+  "register": "Register",
+  "email": "Email",
+  "password": "Password",
+  "confirmPassword": "Confirm Password",
+  "fullName": "Full Name",
+  "rememberMe": "Remember me",
+  "forgotPassword": "Forgot password?",
+  "continueWith": "or continue with",
+  "emailRequired": "Email is required",
+  "passwordRequired": "Password is required",
+  "nameRequired": "Full name is required",
+  "passwordMismatch": "Passwords do not match",
+  "emailExists": "This email is already registered",
+  "emailInvalid": "Please enter a valid email",
+  "passwordInvalid": "Password must be at least 6 characters",
+  "invalidCredentials": "Invalid email or password"
+} 
