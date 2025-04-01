@@ -17,5 +17,10 @@
   "invalidCredentials": "Yanlış e-poçt və ya şifrə",
   "passwordMinLength": "Şifrə minimum 8 simvol olmalıdır",
   "passwordCase": "Şifrədə böyük və kiçik hərflər olmalıdır",
-  "passwordNumber": "Şifrədə rəqəm olmalıdır"
+  "passwordNumber": "Şifrədə rəqəm olmalıdır",
+  "emailPlaceholder": "nümunə@email.com",
+  "passwordPlaceholder": "••••••••",
+  "close": "Bağla",
+  "error": "Xəta",
+  "appName": "PolyAgro"
 } 

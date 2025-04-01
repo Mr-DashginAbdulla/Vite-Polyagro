@@ -17,11 +17,12 @@ export const useLanguage = () => {
 };
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState(i18n.language);
+  const [language, setLanguage] = useState(localStorage.getItem('language') || i18n.language);
 
   const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
     setLanguage(lang);
+    localStorage.setItem('language', lang);
   };
 
   const value = {

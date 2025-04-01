@@ -9,6 +9,7 @@ interface User {
 interface AuthContextType {
   currentUser: User | null;
   loading: boolean;
+  isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, name: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -111,6 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = {
     currentUser,
     loading,
+    isAuthenticated: !!currentUser,
     login,
     register,
     logout,

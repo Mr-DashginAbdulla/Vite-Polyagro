@@ -14,6 +14,14 @@
   "passwordMismatch": "Пароли не совпадают",
   "emailExists": "Эта эл. почта уже зарегистрирована",
   "emailInvalid": "Введите действительный адрес эл. почты",
-  "passwordInvalid": "Пароль должен содержать не менее 6 символов",
-  "invalidCredentials": "Неверная эл. почта или пароль"
+  "passwordInvalid": "Пароль должен содержать не менее 8 символов",
+  "invalidCredentials": "Неверная эл. почта или пароль",
+  "passwordMinLength": "Пароль должен содержать не менее 8 символов",
+  "passwordCase": "Пароль должен содержать прописные и строчные буквы",
+  "passwordNumber": "Пароль должен содержать цифру",
+  "emailPlaceholder": "пример@почта.ру",
+  "passwordPlaceholder": "••••••••",
+  "close": "Закрыть",
+  "error": "Ошибка",
+  "appName": "PolyAgro"
 } 
