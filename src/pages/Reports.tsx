@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import * as echarts from 'echarts';
 import Sidebar from '../components/Sidebar';
+import { useDevices } from '../contexts/DeviceContext';
+import Button from '../components/Button';
+import StatCard from '../components/StatCard';
 
 interface ReportData {
   temperature: number[];
@@ -9,22 +12,13 @@ interface ReportData {
   time: string[];
 }
 
-interface Greenhouse {
-  id: string;
-  name: string;
-  status: 'active' | 'inactive';
-}
-
 const Reports: React.FC = () => {
+  const { devices } = useDevices();
   const [timeRange, setTimeRange] = useState<'daily' | 'weekly' | 'monthly'>('daily');
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedGreenhouse, setSelectedGreenhouse] = useState<string>('1');
+  const [selectedDevice, setSelectedDevice] = useState<string>('1');
 
-  const greenhouses: Greenhouse[] = [
-    { id: '1', name: 'Sera 1', status: 'active' },
-    { id: '2', name: 'Sera 2', status: 'active' },
-    { id: '3', name: 'Sera 3', status: 'inactive' },
-  ];
+  const selectedDeviceData = devices.find(d => d.id === selectedDevice);
 
   const mockData: ReportData = {
     temperature: Array.from({length: 24}, () => Math.random() * 5 + 22),
@@ -245,116 +239,75 @@ const Reports: React.FC = () => {
                     onClick={() => setShowDropdown(!showDropdown)}
                     className="w-full md:w-auto flex items-center justify-between gap-2 bg-white border border-gray-200 rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer text-base font-medium"
                   >
-                    <span className="truncate">{greenhouses.find(g => g.id === selectedGreenhouse)?.name}</span>
+                    <span className="truncate">{selectedDeviceData?.name || 'Cihaz Seçin'}</span>
                     <i className="ri-arrow-down-s-line text-lg"></i>
                   </button>
                   {showDropdown && (
                     <div className="absolute mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10 w-full">
                       <div className="py-1">
-                        {greenhouses.map((greenhouse) => (
+                        {devices.map((device) => (
                           <button
-                            key={greenhouse.id}
+                            key={device.id}
                             onClick={() => {
-                              setSelectedGreenhouse(greenhouse.id);
+                              setSelectedDevice(device.id);
                               setShowDropdown(false);
                             }}
-                            className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                            className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer"
                           >
-                            {greenhouse.name}
+                            {device.name}
                           </button>
                         ))}
                       </div>
                     </div>
                   )}
                 </div>
-                <p className="text-sm text-gray-500 mt-1.5">Son güncelleme: {new Date().toLocaleString('tr-TR')}</p>
+                <p className="text-sm text-gray-500 mt-1.5">Son güncelleme: {selectedDeviceData?.lastSeen || 'Veri yok'}</p>
               </div>
-            </div>
-            <div className="flex items-center gap-4 w-full md:w-auto">
-              <button className="w-full md:w-auto px-4 py-2.5 bg-green-200 text-primary rounded-lg flex items-center justify-center gap-2 hover:bg-green-300 transition-all active:scale-95">
-                <i className="ri-refresh-line text-lg"></i>
-                <span className="font-medium">Yenile</span>
-              </button>
             </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
-          <div className="bg-white rounded-lg shadow p-4 md:p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="size-10 rounded-full bg-blue-100 flex items-center justify-center">
-                  <i className="ri-temp-hot-line text-blue-500 text-xl"></i>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500">Sıcaklık</h3>
-                  <p className="text-2xl font-semibold text-gray-900">24°C</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-sm font-medium text-green-600">+2.5°C</p>
-                <p className="text-xs text-gray-500">Son 24 saat</p>
-              </div>
-            </div>
-            <div className="h-20" id="tempChart"></div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-4 md:p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="size-10 rounded-full bg-green-100 flex items-center justify-center">
-                  <i className="ri-water-flash-line text-green-500 text-xl"></i>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500">Nem</h3>
-                  <p className="text-2xl font-semibold text-gray-900">65%</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-sm font-medium text-red-600">-3.2%</p>
-                <p className="text-xs text-gray-500">Son 24 saat</p>
-              </div>
-            </div>
-            <div className="h-20" id="humidityChart"></div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-4 md:p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="size-10 rounded-full bg-purple-100 flex items-center justify-center">
-                  <i className="ri-cloud-line text-purple-500 text-xl"></i>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500">CO₂</h3>
-                  <p className="text-2xl font-semibold text-gray-900">450 PPM</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-sm font-medium text-green-600">+15 PPM</p>
-                <p className="text-xs text-gray-500">Son 24 saat</p>
-              </div>
-            </div>
-            <div className="h-20" id="co2Chart"></div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-4 md:p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="size-10 rounded-full bg-orange-100 flex items-center justify-center">
-                  <i className="ri-plant-line text-orange-500 text-xl"></i>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500">Sera Durumu</h3>
-                  <p className="text-2xl font-semibold text-gray-900">Aktif</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-sm font-medium text-green-600">Normal</p>
-                <p className="text-xs text-gray-500">Sistem Durumu</p>
-              </div>
-            </div>
-            <div className="h-20" id="statusChart"></div>
-          </div>
+          <StatCard
+            title="Sıcaklık"
+            value={`${selectedDeviceData?.data?.temperature || 0}°C`}
+            icon="ri-temp-hot-line"
+            iconColor="bg-blue-100"
+            change={{
+              value: '+2.5°C',
+              type: 'increase'
+            }}
+            subtitle="Son 24 saat"
+          />
+          <StatCard
+            title="Nem"
+            value={`${selectedDeviceData?.data?.humidity || 0}%`}
+            icon="ri-water-flash-line"
+            iconColor="bg-green-100"
+            change={{
+              value: '-3.2%',
+              type: 'decrease'
+            }}
+            subtitle="Son 24 saat"
+          />
+          <StatCard
+            title="CO₂"
+            value={`${selectedDeviceData?.data?.co2 || 0} PPM`}
+            icon="ri-cloud-line"
+            iconColor="bg-purple-100"
+            change={{
+              value: '+15 PPM',
+              type: 'increase'
+            }}
+            subtitle="Son 24 saat"
+          />
+          <StatCard
+            title="Sera Durumu"
+            value={selectedDeviceData?.status === 'active' ? 'Aktif' : 'Pasif'}
+            icon="ri-plant-line"
+            iconColor="bg-orange-100"
+            subtitle="Sistem Durumu"
+          />
         </div>
 
         <div className="bg-white rounded-lg shadow p-4 md:p-6 mb-6">
@@ -363,7 +316,7 @@ const Reports: React.FC = () => {
               <button
                 onClick={() => setTimeRange('daily')}
                 className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  timeRange === 'daily' ? 'bg-white shadow-sm' : ''
+                  timeRange === 'daily' ? 'bg-green-100 text-green-600 shadow-sm' : ''
                 }`}
               >
                 Günlük
@@ -371,7 +324,7 @@ const Reports: React.FC = () => {
               <button
                 onClick={() => setTimeRange('weekly')}
                 className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  timeRange === 'weekly' ? 'bg-white shadow-sm' : ''
+                  timeRange === 'weekly' ? 'bg-green-100 text-green-600 shadow-sm' : ''
                 }`}
               >
                 Haftalık
@@ -379,7 +332,7 @@ const Reports: React.FC = () => {
               <button
                 onClick={() => setTimeRange('monthly')}
                 className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  timeRange === 'monthly' ? 'bg-white shadow-sm' : ''
+                  timeRange === 'monthly' ? 'bg-green-100 text-green-600 shadow-sm' : ''
                 }`}
               >
                 Aylık
@@ -388,17 +341,15 @@ const Reports: React.FC = () => {
             <div className="flex items-center gap-2">
               <input
                 type="date"
-                className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer"
               />
               <span className="text-gray-500">-</span>
               <input
                 type="date"
-                className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer"
               />
             </div>
-            <button className="px-4 py-2 bg-green-200 text-primary rounded-lg hover:bg-green-300 transition-all active:scale-95">
-              Uygula
-            </button>
+            <Button>Uygula</Button>
           </div>
           <div className="chart-container" id="lineChart"></div>
         </div>
@@ -418,38 +369,16 @@ const Reports: React.FC = () => {
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-900">Detaylı Veriler</h3>
               <div className="flex items-center gap-2">
-                <button className="p-2 text-gray-500 hover:text-primary rounded-lg hover:bg-gray-100">
+                <Button variant="icon">
                   <i className="ri-file-excel-line text-xl"></i>
-                </button>
-                <button className="p-2 text-gray-500 hover:text-primary rounded-lg hover:bg-gray-100">
+                </Button>
+                <Button variant="icon">
                   <i className="ri-file-pdf-line text-xl"></i>
-                </button>
-                <button className="p-2 text-gray-500 hover:text-primary rounded-lg hover:bg-gray-100">
+                </Button>
+                <Button variant="icon">
                   <i className="ri-mail-line text-xl"></i>
-                </button>
+                </Button>
               </div>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="text-left text-sm font-medium text-gray-500">
-                    <th className="pb-3">Tarih</th>
-                    <th className="pb-3">Sıcaklık</th>
-                    <th className="pb-3">Nem</th>
-                    <th className="pb-3">CO₂</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <tr key={index} className="border-t">
-                      <td className="py-3 text-sm text-gray-900">2024-03-{index + 1}</td>
-                      <td className="py-3 text-sm text-gray-900">24°C</td>
-                      <td className="py-3 text-sm text-gray-900">65%</td>
-                      <td className="py-3 text-sm text-gray-900">450 PPM</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
             </div>
           </div>
         </div>

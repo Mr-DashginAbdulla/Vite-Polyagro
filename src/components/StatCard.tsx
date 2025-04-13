@@ -2,18 +2,14 @@ import React from 'react';
 
 interface StatCardProps {
   title: string;
-  value: string;
+  value: string | number;
   icon: string;
   iconColor: string;
-  description?: string;
-  minMax?: {
-    min: string;
-    max: string;
+  change?: {
+    value: string;
+    type: 'increase' | 'decrease';
   };
-  progress?: {
-    value: number;
-    color: string;
-  };
+  subtitle?: string;
 }
 
 const StatCard: React.FC<StatCardProps> = ({
@@ -21,39 +17,30 @@ const StatCard: React.FC<StatCardProps> = ({
   value,
   icon,
   iconColor,
-  description,
-  minMax,
-  progress
+  change,
+  subtitle
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-white rounded-lg shadow p-4 md:p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-medium">{title}</h3>
-        <i className={`${icon} ${iconColor}`}></i>
+        <div className="flex items-center gap-3">
+          <div className={`size-10 rounded-full ${iconColor} flex items-center justify-center`}>
+            <i className={`${icon} text-xl`}></i>
+          </div>
+          <div>
+            <h3 className="text-sm font-medium text-gray-500">{title}</h3>
+            <p className="text-2xl font-semibold text-gray-900">{value}</p>
+          </div>
+        </div>
+        {change && (
+          <div className="text-right">
+            <p className={`text-sm font-medium ${change.type === 'increase' ? 'text-green-600' : 'text-red-600'}`}>
+              {change.value}
+            </p>
+            {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
+          </div>
+        )}
       </div>
-      <div className="text-3xl font-medium mb-2">{value}</div>
-      {progress && (
-        <div className="w-full bg-gray-200 rounded-full h-2.5">
-          <div 
-            className={`h-2.5 rounded-full`} 
-            style={{ 
-              width: `${progress.value}%`,
-              backgroundColor: progress.color
-            }}
-          ></div>
-        </div>
-      )}
-      {minMax && (
-        <div className="flex items-center gap-4 text-sm">
-          <span className="text-gray-500">Min: {minMax.min}</span>
-          <span className="text-gray-500">Max: {minMax.max}</span>
-        </div>
-      )}
-      {description && (
-        <p className={`text-sm ${progress ? 'text-gray-500 mt-2' : 'text-green-500'}`}>
-          {description}
-        </p>
-      )}
     </div>
   );
 };

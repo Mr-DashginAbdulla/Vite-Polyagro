@@ -3,9 +3,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { DeviceProvider } from './contexts/DeviceContext';
 import LoginPage from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Reports from './pages/Reports';
+import Devices from './pages/Devices';
 import { useAuth } from './contexts/AuthContext';
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -19,25 +21,35 @@ const App: React.FC = () => {
       <ThemeProvider>
         <LanguageProvider>
           <AuthProvider>
-            <Routes>
-              <Route path="/login" element={<LoginPage />} />
-              <Route
-                path="/"
-                element={
-                  <PrivateRoute>
-                    <Dashboard />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/reports"
-                element={
-                  <PrivateRoute>
-                    <Reports />
-                  </PrivateRoute>
-                }
-              />
-            </Routes>
+            <DeviceProvider>
+              <Routes>
+                <Route path="/login" element={<LoginPage />} />
+                <Route
+                  path="/"
+                  element={
+                    <PrivateRoute>
+                      <Dashboard />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/reports"
+                  element={
+                    <PrivateRoute>
+                      <Reports />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/devices"
+                  element={
+                    <PrivateRoute>
+                      <Devices />
+                    </PrivateRoute>
+                  }
+                />
+              </Routes>
+            </DeviceProvider>
           </AuthProvider>
         </LanguageProvider>
       </ThemeProvider>

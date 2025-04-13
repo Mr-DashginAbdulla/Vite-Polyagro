@@ -3,6 +3,7 @@ import * as echarts from 'echarts';
 import Sidebar from '../components/Sidebar';
 import StatCard from '../components/StatCard';
 import ControlCard from '../components/ControlCard';
+import { useDevices } from '../contexts/DeviceContext';
 
 interface Greenhouse {
   id: string;
@@ -18,6 +19,7 @@ interface ReportData {
 }
 
 const Dashboard: React.FC = () => {
+  const { devices, updateDeviceData } = useDevices();
   const [autoWatering, setAutoWatering] = useState(true);
   const [waterAmount, setWaterAmount] = useState(50);
   const [fanStatus, setFanStatus] = useState(false);
@@ -26,11 +28,13 @@ const Dashboard: React.FC = () => {
   const [chartPeriod, setChartPeriod] = useState<'daily' | 'weekly' | 'monthly'>('daily');
   const [showDropdown, setShowDropdown] = useState(false);
 
-  const greenhouses: Greenhouse[] = [
-    { id: '1', name: 'Sera 1', status: 'active' },
-    { id: '2', name: 'Sera 2', status: 'active' },
-    { id: '3', name: 'Sera 3', status: 'inactive' },
-  ];
+  const greenhouses: Greenhouse[] = devices.map(device => ({
+    id: device.id,
+    name: device.name,
+    status: device.status
+  }));
+
+  const selectedDevice = devices.find(d => d.id === selectedGreenhouse);
 
   const mockData: ReportData = {
     temperature: Array.from({length: 24}, () => Math.random() * 5 + 22),
@@ -163,6 +167,7 @@ const Dashboard: React.FC = () => {
 
   const handlePeriodChange = (period: 'daily' | 'weekly' | 'monthly') => {
     setChartPeriod(period);
+    // Burada seçilen periyoda göre veri güncelleme işlemleri yapılabilir
   };
 
   return (
@@ -182,7 +187,7 @@ const Dashboard: React.FC = () => {
                     onClick={() => setShowDropdown(!showDropdown)}
                     className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer text-base font-medium"
                   >
-                    <span>{greenhouses.find(g => g.id === selectedGreenhouse)?.name}</span>
+                    <span>{selectedDevice?.name || 'Cihaz Seçin'}</span>
                     <i className="ri-arrow-down-s-line text-lg"></i>
                   </button>
                   {showDropdown && (
@@ -204,11 +209,11 @@ const Dashboard: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <p className="text-sm text-gray-500 mt-1.5">Son güncelleme: 5 dakika önce</p>
+                <p className="text-sm text-gray-500 mt-1.5">Son güncelleme: {selectedDevice?.lastSeen || 'Veri yok'}</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <button className="px-4 py-2.5 bg-green-200 text-primary rounded-lg flex items-center gap-2 hover:bg-green-300 transition-all active:scale-95">
+              <button className="px-4 py-2.5 bg-green-600 text-white rounded-lg flex items-center gap-2 hover:bg-green-700 transition-all active:scale-95">
                 <i className="ri-refresh-line text-lg"></i>
                 <span className="font-medium">Yenile</span>
               </button>
@@ -219,18 +224,18 @@ const Dashboard: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <StatCard
             title="Toprak Nemi"
-            value="65%"
+            value={`${selectedDevice?.data?.soilMoisture || 0}%`}
             icon="ri-water-flash-line"
             iconColor="text-blue-500"
             description="Optimal seviyede"
             progress={{
-              value: 65,
+              value: selectedDevice?.data?.soilMoisture || 0,
               color: '#3b82f6'
             }}
           />
           <StatCard
             title="Sıcaklık"
-            value="24°C"
+            value={`${selectedDevice?.data?.temperature || 0}°C`}
             icon="ri-temp-hot-line"
             iconColor="text-orange-500"
             minMax={{
@@ -240,7 +245,7 @@ const Dashboard: React.FC = () => {
           />
           <StatCard
             title="CO2 Seviyesi"
-            value="450 PPM"
+            value={`${selectedDevice?.data?.co2 || 0} PPM`}
             icon="ri-cloud-line"
             iconColor="text-purple-500"
             description="Normal seviyede"
@@ -253,7 +258,7 @@ const Dashboard: React.FC = () => {
               <button
                 onClick={() => handlePeriodChange('daily')}
                 className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  chartPeriod === 'daily' ? 'bg-white shadow-sm' : ''
+                  chartPeriod === 'daily' ? 'bg-green-100 text-green-600 shadow-sm' : ''
                 }`}
               >
                 Günlük
@@ -261,7 +266,7 @@ const Dashboard: React.FC = () => {
               <button
                 onClick={() => handlePeriodChange('weekly')}
                 className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  chartPeriod === 'weekly' ? 'bg-white shadow-sm' : ''
+                  chartPeriod === 'weekly' ? 'bg-green-100 text-green-600 shadow-sm' : ''
                 }`}
               >
                 Haftalık
@@ -269,7 +274,7 @@ const Dashboard: React.FC = () => {
               <button
                 onClick={() => handlePeriodChange('monthly')}
                 className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  chartPeriod === 'monthly' ? 'bg-white shadow-sm' : ''
+                  chartPeriod === 'monthly' ? 'bg-green-100 text-green-600 shadow-sm' : ''
                 }`}
               >
                 Aylık
