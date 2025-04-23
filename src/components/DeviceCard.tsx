@@ -2,22 +2,30 @@ import React from 'react';
 import { Device } from '../contexts/DeviceContext';
 import Button from './Button';
 import Switch from './Switch';
+import { ThemeType } from '../contexts/ThemeContext';
 
 interface DeviceCardProps {
   device: Device;
   onEdit: (device: Device) => void;
   onToggleStatus: (id: string) => void;
   onDelete: (id: string) => void;
+  theme: ThemeType;
+  children?: React.ReactNode;
 }
 
 const DeviceCard: React.FC<DeviceCardProps> = ({
   device,
   onEdit,
   onToggleStatus,
-  onDelete
+  onDelete,
+  theme
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className={`p-4 rounded-lg shadow-md ${
+      theme === 'dark' 
+        ? 'bg-gray-800 text-white' 
+        : 'bg-white text-gray-800'
+    }`}>
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className={`size-10 rounded-full flex items-center justify-center ${
@@ -28,21 +36,30 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
             }`}></i>
           </div>
           <div>
-            <h3 className="font-medium text-gray-900">{device.name}</h3>
-            <p className="text-sm text-gray-500">ID: {device.arduinoId}</p>
+            <h3 className={`text-lg font-semibold mb-2 ${
+              theme === 'dark' ? 'text-white' : 'text-gray-800'
+            }`}>
+              {device.name}
+            </h3>
+            <p className={`text-sm mb-2 ${
+              theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+            }`}>
+              ID: {device.arduinoId}
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <Button
             variant="icon"
             onClick={() => onEdit(device)}
+            className={`${theme === 'dark' ? 'text-white hover:text-blue-300 hover:bg-blue-700' : 'text-gray-800 hover:text-blue-500 hover:bg-blue-100'}`}
           >
             <i className="ri-edit-line"></i>
           </Button>
           <Button
             variant="icon"
             onClick={() => onDelete(device.id)}
-            className="text-gray-500 hover:text-red-600 hover:bg-red-50"
+            className={`text-${theme === 'dark' ? 'white' : 'gray-800'} hover:text-${theme === 'dark' ? 'red-300' : 'red-500'} hover:bg-${theme === 'dark' ? 'red-700' : 'red-100'}`}
           >
             <i className="ri-delete-bin-line"></i>
           </Button>

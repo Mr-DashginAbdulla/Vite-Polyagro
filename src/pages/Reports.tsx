@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar';
 import { useDevices } from '../contexts/DeviceContext';
 import Button from '../components/Button';
 import StatCard from '../components/StatCard';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface ReportData {
   temperature: number[];
@@ -14,6 +15,7 @@ interface ReportData {
 
 const Reports: React.FC = () => {
   const { devices } = useDevices();
+  const { theme } = useTheme();
   const [timeRange, setTimeRange] = useState<'daily' | 'weekly' | 'monthly'>('daily');
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState<string>('1');
@@ -223,27 +225,33 @@ const Reports: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex min-h-screen">
+    <div className={`flex min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <Sidebar />
       
       <main className="flex-1 md:ml-64 p-4 md:p-8 pb-24 md:pb-8">
-        <div className="bg-white rounded-lg shadow p-4 md:p-6 mb-6">
+        <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-4 md:p-6 mb-6`}>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="flex items-center gap-4 w-full md:w-auto">
-              <div className="size-12 rounded-full bg-green-200 flex items-center justify-center">
+              <div className={`size-12 rounded-full ${theme === 'dark' ? 'bg-gray-700' : 'bg-green-100'} flex items-center justify-center`}>
                 <i className="ri-plant-line text-primary text-2xl"></i>
               </div>
               <div className="flex-1 md:flex-none">
                 <div className="relative">
                   <button
                     onClick={() => setShowDropdown(!showDropdown)}
-                    className="w-full md:w-auto flex items-center justify-between gap-2 bg-white border border-gray-200 rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer text-base font-medium"
+                    className={`w-full md:w-auto flex items-center justify-between gap-2 ${
+                      theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'
+                    } border rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer text-base font-medium`}
                   >
-                    <span className="truncate">{selectedDeviceData?.name || 'Cihaz Seçin'}</span>
+                    <span className={`truncate ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                      {selectedDeviceData?.name || 'Cihaz Seçin'}
+                    </span>
                     <i className="ri-arrow-down-s-line text-lg"></i>
                   </button>
                   {showDropdown && (
-                    <div className="absolute mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10 w-full">
+                    <div className={`absolute mt-2 ${
+                      theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+                    } border rounded-lg shadow-lg z-10 w-full`}>
                       <div className="py-1">
                         {devices.map((device) => (
                           <button
@@ -252,7 +260,9 @@ const Reports: React.FC = () => {
                               setSelectedDevice(device.id);
                               setShowDropdown(false);
                             }}
-                            className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                            className={`block w-full text-left px-4 py-2 ${
+                              theme === 'dark' ? 'text-gray-300 hover:bg-gray-700' : 'hover:bg-gray-100'
+                            } cursor-pointer`}
                           >
                             {device.name}
                           </button>
@@ -261,7 +271,9 @@ const Reports: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <p className="text-sm text-gray-500 mt-1.5">Son güncelleme: {selectedDeviceData?.lastSeen || 'Veri yok'}</p>
+                <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} mt-1.5`}>
+                  Son güncelleme: {selectedDeviceData?.lastSeen || 'Veri yok'}
+                </p>
               </div>
             </div>
           </div>
@@ -272,51 +284,63 @@ const Reports: React.FC = () => {
             title="Sıcaklık"
             value={`${selectedDeviceData?.data?.temperature || 0}°C`}
             icon="ri-temp-hot-line"
-            iconColor="bg-blue-100"
+            iconColor={theme === 'dark' ? 'text-blue-400' : 'text-blue-500'}
             change={{
               value: '+2.5°C',
               type: 'increase'
             }}
             subtitle="Son 24 saat"
+            theme={theme}
           />
           <StatCard
             title="Nem"
             value={`${selectedDeviceData?.data?.humidity || 0}%`}
             icon="ri-water-flash-line"
-            iconColor="bg-green-100"
+            iconColor={theme === 'dark' ? 'text-green-400' : 'text-green-500'}
             change={{
               value: '-3.2%',
               type: 'decrease'
             }}
             subtitle="Son 24 saat"
+            theme={theme}
           />
           <StatCard
             title="CO₂"
             value={`${selectedDeviceData?.data?.co2 || 0} PPM`}
             icon="ri-cloud-line"
-            iconColor="bg-purple-100"
+            iconColor={theme === 'dark' ? 'text-purple-400' : 'text-purple-500'}
             change={{
               value: '+15 PPM',
               type: 'increase'
             }}
             subtitle="Son 24 saat"
+            theme={theme}
           />
           <StatCard
             title="Sera Durumu"
             value={selectedDeviceData?.status === 'active' ? 'Aktif' : 'Pasif'}
             icon="ri-plant-line"
-            iconColor="bg-orange-100"
+            iconColor={theme === 'dark' ? 'text-orange-400' : 'text-orange-500'}
             subtitle="Sistem Durumu"
+            theme={theme}
           />
         </div>
 
-        <div className="bg-white rounded-lg shadow p-4 md:p-6 mb-6">
+        <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-4 md:p-6 mb-6`}>
           <div className="flex flex-col md:flex-row flex-wrap gap-4 items-start md:items-center mb-6">
-            <div className="flex items-center space-x-2 bg-gray-100 rounded-full p-1">
+            <div className={`flex items-center space-x-2 ${
+              theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'
+            } rounded-full p-1`}>
               <button
                 onClick={() => setTimeRange('daily')}
                 className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  timeRange === 'daily' ? 'bg-green-100 text-green-600 shadow-sm' : ''
+                  timeRange === 'daily' 
+                    ? theme === 'dark' 
+                      ? 'bg-gray-600 text-green-400 shadow-sm' 
+                      : 'bg-green-100 text-green-600 shadow-sm'
+                    : theme === 'dark'
+                    ? 'text-gray-300'
+                    : ''
                 }`}
               >
                 Günlük
@@ -324,7 +348,13 @@ const Reports: React.FC = () => {
               <button
                 onClick={() => setTimeRange('weekly')}
                 className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  timeRange === 'weekly' ? 'bg-green-100 text-green-600 shadow-sm' : ''
+                  timeRange === 'weekly' 
+                    ? theme === 'dark' 
+                      ? 'bg-gray-600 text-green-400 shadow-sm' 
+                      : 'bg-green-100 text-green-600 shadow-sm'
+                    : theme === 'dark'
+                    ? 'text-gray-300'
+                    : ''
                 }`}
               >
                 Haftalık
@@ -332,7 +362,13 @@ const Reports: React.FC = () => {
               <button
                 onClick={() => setTimeRange('monthly')}
                 className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  timeRange === 'monthly' ? 'bg-green-100 text-green-600 shadow-sm' : ''
+                  timeRange === 'monthly' 
+                    ? theme === 'dark' 
+                      ? 'bg-gray-600 text-green-400 shadow-sm' 
+                      : 'bg-green-100 text-green-600 shadow-sm'
+                    : theme === 'dark'
+                    ? 'text-gray-300'
+                    : ''
                 }`}
               >
                 Aylık
@@ -341,41 +377,51 @@ const Reports: React.FC = () => {
             <div className="flex items-center gap-2">
               <input
                 type="date"
-                className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer"
+                className={`px-4 py-2 ${
+                  theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-200'
+                } border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer`}
               />
-              <span className="text-gray-500">-</span>
+              <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}>-</span>
               <input
                 type="date"
-                className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer"
+                className={`px-4 py-2 ${
+                  theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-200'
+                } border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer`}
               />
             </div>
-            <Button>Uygula</Button>
+            <Button theme={theme}>Uygula</Button>
           </div>
           <div className="chart-container" id="lineChart"></div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-          <div className="bg-white rounded-lg shadow p-4 md:p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Kullanım Dağılımı</h3>
+          <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-4 md:p-6`}>
+            <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+              Kullanım Dağılımı
+            </h3>
             <div className="h-64" id="pieChart"></div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-4 md:p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Haftalık Karşılaştırma</h3>
+          <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-4 md:p-6`}>
+            <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+              Haftalık Karşılaştırma
+            </h3>
             <div className="h-64" id="barChart"></div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-4 md:p-6">
+          <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-4 md:p-6`}>
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Detaylı Veriler</h3>
+              <h3 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                Detaylı Veriler
+              </h3>
               <div className="flex items-center gap-2">
-                <Button variant="icon">
+                <Button variant="icon" theme={theme}>
                   <i className="ri-file-excel-line text-xl"></i>
                 </Button>
-                <Button variant="icon">
+                <Button variant="icon" theme={theme}>
                   <i className="ri-file-pdf-line text-xl"></i>
                 </Button>
-                <Button variant="icon">
+                <Button variant="icon" theme={theme}>
                   <i className="ri-mail-line text-xl"></i>
                 </Button>
               </div>

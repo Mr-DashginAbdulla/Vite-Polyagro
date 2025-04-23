@@ -1,11 +1,16 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
+  const { theme } = useTheme();
+  const { t } = useTranslation();
 
   const menuItems = [
     { path: '/', icon: 'ri-dashboard-line', label: 'Kontrol Paneli' },
@@ -26,7 +31,7 @@ const Sidebar: React.FC = () => {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="hidden md:block w-64 bg-white shadow-lg fixed h-full">
+      <aside className={`hidden md:block w-64 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} shadow-lg fixed h-full`}>
         <div className="p-6">
           <div className="flex items-center gap-4 mb-8">
             <div className="size-12 rounded-full bg-gray-200 overflow-hidden">
@@ -37,50 +42,55 @@ const Sidebar: React.FC = () => {
               />
             </div>
             <div>
-              <h3 className="font-medium">{currentUser?.displayName || 'Kullanıcı'}</h3>
-              <p className="text-sm text-gray-500">Sera Yöneticisi</p>
+              <h3 className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{currentUser?.displayName || 'Kullanıcı'}</h3>
             </div>
           </div>
           <nav className="space-y-2">
             {menuItems.map((item) => (
-              <button
-                key={item.path}
-                onClick={() => navigate(item.path)}
-                className={`w-full flex items-center gap-3 p-3 rounded-lg transition-colors ${
+              <Link
+                to={item.path}
+                className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-200 ${
+                  theme === 'dark'
+                    ? 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                } ${
                   location.pathname === item.path
-                    ? 'text-primary bg-green-50'
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? theme === 'dark'
+                      ? 'bg-gray-700 text-white border-l-4 border-primary'
+                      : 'bg-gray-100 text-gray-900 border-l-4 border-primary'
+                    : ''
                 }`}
               >
-                <i className={item.icon}></i>
-                <span>{item.label}</span>
-              </button>
+                <i className={`${item.icon} text-xl`}></i>
+                <span className="font-medium">{t(item.label)}</span>
+              </Link>
             ))}
           </nav>
-          <button
-            onClick={handleLogout}
-            className="w-full mt-8 flex items-center gap-3 p-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-          >
-            <i className="ri-logout-box-line"></i>
-            <span>Çıkış Yap</span>
-          </button>
         </div>
       </aside>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-40">
+      <nav className={`md:hidden fixed bottom-0 left-0 right-0 ${
+        theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+      } border-t z-40`}>
         <div className="flex justify-around items-center h-16">
           {menuItems.map((item) => (
-            <button
+            <Link
+              to={item.path}
               key={item.path}
-              onClick={() => navigate(item.path)}
               className={`flex flex-col items-center justify-center p-2 ${
-                location.pathname === item.path ? 'text-primary' : 'text-gray-600'
+                location.pathname === item.path 
+                  ? theme === 'dark' 
+                    ? 'text-primary' 
+                    : 'text-primary'
+                  : theme === 'dark'
+                  ? 'text-gray-300'
+                  : 'text-gray-600'
               }`}
             >
               <i className={`${item.icon} text-xl mb-1`}></i>
-              <span className="text-xs">{item.label}</span>
-            </button>
+              <span className="text-xs">{t(item.label)}</span>
+            </Link>
           ))}
         </div>
       </nav>

@@ -5,9 +5,11 @@ import Button from '../components/Button';
 import Input from '../components/Input';
 import Modal from '../components/Modal';
 import DeviceCard from '../components/DeviceCard';
+import { useTheme } from '../contexts/ThemeContext';
 
 const Devices: React.FC = () => {
   const { devices, addDevice, deleteDevice, updateDeviceStatus, updateDeviceName } = useDevices();
+  const { theme } = useTheme();
   const [showAddDevice, setShowAddDevice] = useState(false);
   const [showEditDevice, setShowEditDevice] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -19,7 +21,6 @@ const Devices: React.FC = () => {
   const handleAddDevice = () => {
     if (newDeviceName && newDeviceId) {
       addDevice({
-        id: Date.now().toString(),
         name: newDeviceName,
         type: 'Arduino',
         status: 'active',
@@ -66,19 +67,19 @@ const Devices: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className={`flex min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <Sidebar />
       
       <main className="flex-1 md:ml-64 p-4 md:p-8 pb-24 md:pb-8">
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
+        <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-6 mb-6`}>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="flex items-center gap-4">
-              <div className="size-12 rounded-full bg-green-200 flex items-center justify-center">
+              <div className={`size-12 rounded-full ${theme === 'dark' ? 'bg-gray-700' : 'bg-green-200'} flex items-center justify-center`}>
                 <i className="ri-device-line text-primary text-2xl"></i>
               </div>
               <div>
-                <h1 className="text-2xl font-semibold text-gray-900">Cihaz Yönetimi</h1>
-                <p className="text-sm text-gray-500">Arduino cihazlarınızı buradan yönetebilirsiniz</p>
+                <h1 className={`text-2xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Cihaz Yönetimi</h1>
+                <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Arduino cihazlarınızı buradan yönetebilirsiniz</p>
               </div>
             </div>
             <Button onClick={() => setShowAddDevice(true)}>
@@ -96,6 +97,7 @@ const Devices: React.FC = () => {
             onCancel: () => setShowAddDevice(false),
             onConfirm: handleAddDevice
           }}
+          theme={theme}
         >
           <div className="space-y-4">
             <Input
@@ -103,12 +105,14 @@ const Devices: React.FC = () => {
               placeholder="Örn: Sera 1"
               value={newDeviceName}
               onChange={(e) => setNewDeviceName(e.target.value)}
+              theme={theme}
             />
             <Input
               label="Arduino ID"
               placeholder="Örn: ARD001"
               value={newDeviceId}
               onChange={(e) => setNewDeviceId(e.target.value)}
+              theme={theme}
             />
           </div>
         </Modal>
@@ -127,6 +131,7 @@ const Devices: React.FC = () => {
             },
             onConfirm: handleEditDevice
           }}
+          theme={theme}
         >
           <div className="space-y-4">
             <Input
@@ -134,8 +139,9 @@ const Devices: React.FC = () => {
               placeholder="Örn: Sera 1"
               value={newDeviceName}
               onChange={(e) => setNewDeviceName(e.target.value)}
+              theme={theme}
             />
-            <div className="text-sm text-gray-500">
+            <div className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
               Arduino ID: {editingDevice?.arduinoId}
             </div>
           </div>
@@ -156,8 +162,9 @@ const Devices: React.FC = () => {
             onConfirm: handleDeleteDevice,
             variant: 'danger'
           }}
+          theme={theme}
         >
-          <p className="text-gray-600">
+          <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
             Bu cihazı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.
           </p>
         </Modal>
@@ -173,7 +180,46 @@ const Devices: React.FC = () => {
                 setDeviceToDelete(id);
                 setShowDeleteConfirm(true);
               }}
-            />
+              theme={theme}
+            >
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => openEditModal(device)}
+                  className={`p-2 rounded-lg ${
+                    theme === 'dark' 
+                      ? 'text-gray-400 hover:text-white hover:bg-gray-700' 
+                      : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
+                  } transition-colors`}
+                >
+                  <i className="ri-edit-line text-xl"></i>
+                </button>
+                <button
+                  onClick={() => {
+                    setDeviceToDelete(device.id);
+                    setShowDeleteConfirm(true);
+                  }}
+                  className={`p-2 rounded-lg ${
+                    theme === 'dark' 
+                      ? 'text-red-400 hover:text-white hover:bg-red-900' 
+                      : 'text-red-500 hover:text-white hover:bg-red-500'
+                  } transition-colors`}
+                >
+                  <i className="ri-delete-bin-line text-xl"></i>
+                </button>
+                <button
+                  onClick={() => {
+                    // Implement view functionality
+                  }}
+                  className={`p-2 rounded-lg ${
+                    theme === 'dark' 
+                      ? 'text-blue-400 hover:text-white hover:bg-blue-900' 
+                      : 'text-blue-500 hover:text-white hover:bg-blue-500'
+                  } transition-colors`}
+                >
+                  <i className="ri-eye-line text-xl"></i>
+                </button>
+              </div>
+            </DeviceCard>
           ))}
         </div>
       </main>

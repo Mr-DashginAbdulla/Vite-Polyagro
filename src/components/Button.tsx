@@ -1,4 +1,5 @@
 import React from 'react';
+import { ThemeType } from '../contexts/ThemeContext';
 
 interface ButtonProps {
   onClick?: () => void;
@@ -7,6 +8,7 @@ interface ButtonProps {
   className?: string;
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
+  theme?: ThemeType;
 }
 
 const Button: React.FC<ButtonProps> = ({

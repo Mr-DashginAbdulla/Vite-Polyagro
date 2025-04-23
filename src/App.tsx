@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import Reports from './pages/Reports';
 import Devices from './pages/Devices';
 import { useAuth } from './contexts/AuthContext';
+import Settings from './pages/Settings';
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -45,6 +46,14 @@ const App: React.FC = () => {
                   element={
                     <PrivateRoute>
                       <Devices />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/settings"
+                  element={
+                    <PrivateRoute>
+                      <Settings />
                     </PrivateRoute>
                   }
                 />

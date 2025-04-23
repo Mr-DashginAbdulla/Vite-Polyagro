@@ -5,10 +5,27 @@
 
 :root {
   --primary: #22c55e;
+  --primary-light: #4ade80;
+  --primary-dark: #16a34a;
   --secondary: #3b82f6;
+  --secondary-light: #60a5fa;
+  --secondary-dark: #2563eb;
   --border-radius-sm: 0.375rem;
   --border-radius-md: 0.5rem;
   --border-radius-lg: 0.75rem;
+  --bg-light: #f5f7fa;
+  --bg-card-light: #ffffff;
+  --text-light: #1a202c;
+  --text-secondary-light: #718096;
+  --border-light: #e2e8f0;
+}
+
+.dark {
+  --bg-light: #0f172a;
+  --bg-card-light: #1e293b;
+  --text-light: #f1f5f9;
+  --text-secondary-light: #94a3b8;
+  --border-light: #334155;
 }
 
 .chart-container {

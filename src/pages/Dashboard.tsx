@@ -4,6 +4,7 @@ import Sidebar from '../components/Sidebar';
 import StatCard from '../components/StatCard';
 import ControlCard from '../components/ControlCard';
 import { useDevices } from '../contexts/DeviceContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface Greenhouse {
   id: string;
@@ -20,6 +21,7 @@ interface ReportData {
 
 const Dashboard: React.FC = () => {
   const { devices, updateDeviceData } = useDevices();
+  const { theme } = useTheme();
   const [autoWatering, setAutoWatering] = useState(true);
   const [waterAmount, setWaterAmount] = useState(50);
   const [fanStatus, setFanStatus] = useState(false);
@@ -171,27 +173,31 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className={`flex min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <Sidebar />
       
       <main className="flex-1 md:ml-64 p-4 md:p-8 pb-24 md:pb-8">
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
+        <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-6 mb-6`}>
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
-              <div className="size-12 rounded-full bg-green-200 flex items-center justify-center">
+              <div className={`size-12 rounded-full ${theme === 'dark' ? 'bg-gray-700' : 'bg-green-200'} flex items-center justify-center`}>
                 <i className="ri-plant-line text-primary text-2xl"></i>
               </div>
               <div>
                 <div className="relative">
                   <button
                     onClick={() => setShowDropdown(!showDropdown)}
-                    className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer text-base font-medium"
+                    className={`flex items-center gap-2 ${
+                      theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'
+                    } border rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer text-base font-medium`}
                   >
-                    <span>{selectedDevice?.name || 'Cihaz Seçin'}</span>
+                    <span className={theme === 'dark' ? 'text-white' : 'text-gray-900'}>{selectedDevice?.name || 'Cihaz Seçin'}</span>
                     <i className="ri-arrow-down-s-line text-lg"></i>
                   </button>
                   {showDropdown && (
-                    <div className="absolute mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10 w-full">
+                    <div className={`absolute mt-2 ${
+                      theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+                    } border rounded-lg shadow-lg z-10 w-full`}>
                       <div className="py-1">
                         {greenhouses.map((greenhouse) => (
                           <button
@@ -200,7 +206,9 @@ const Dashboard: React.FC = () => {
                               setSelectedGreenhouse(greenhouse.id);
                               setShowDropdown(false);
                             }}
-                            className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                            className={`block w-full text-left px-4 py-2 ${
+                              theme === 'dark' ? 'text-gray-300 hover:bg-gray-700' : 'hover:bg-gray-100'
+                            }`}
                           >
                             {greenhouse.name}
                           </button>
@@ -209,7 +217,7 @@ const Dashboard: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <p className="text-sm text-gray-500 mt-1.5">Son güncelleme: {selectedDevice?.lastSeen || 'Veri yok'}</p>
+                <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} mt-1.5`}>Son güncelleme: {selectedDevice?.lastSeen || 'Veri yok'}</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -232,6 +240,7 @@ const Dashboard: React.FC = () => {
               value: selectedDevice?.data?.soilMoisture || 0,
               color: '#3b82f6'
             }}
+            theme={theme}
           />
           <StatCard
             title="Sıcaklık"
@@ -242,6 +251,7 @@ const Dashboard: React.FC = () => {
               min: "18°C",
               max: "28°C"
             }}
+            theme={theme}
           />
           <StatCard
             title="CO2 Seviyesi"
@@ -249,16 +259,25 @@ const Dashboard: React.FC = () => {
             icon="ri-cloud-line"
             iconColor="text-purple-500"
             description="Normal seviyede"
+            theme={theme}
           />
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
+        <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-6 mb-6`}>
           <div className="flex flex-wrap gap-4 items-center mb-6">
-            <div className="flex items-center space-x-2 bg-gray-100 rounded-full p-1">
+            <div className={`flex items-center space-x-2 ${
+              theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'
+            } rounded-full p-1`}>
               <button
                 onClick={() => handlePeriodChange('daily')}
                 className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  chartPeriod === 'daily' ? 'bg-green-100 text-green-600 shadow-sm' : ''
+                  chartPeriod === 'daily' 
+                    ? theme === 'dark' 
+                      ? 'bg-gray-600 text-green-400 shadow-sm' 
+                      : 'bg-green-100 text-green-600 shadow-sm'
+                    : theme === 'dark'
+                    ? 'text-gray-300'
+                    : ''
                 }`}
               >
                 Günlük
@@ -266,7 +285,13 @@ const Dashboard: React.FC = () => {
               <button
                 onClick={() => handlePeriodChange('weekly')}
                 className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  chartPeriod === 'weekly' ? 'bg-green-100 text-green-600 shadow-sm' : ''
+                  chartPeriod === 'weekly' 
+                    ? theme === 'dark' 
+                      ? 'bg-gray-600 text-green-400 shadow-sm' 
+                      : 'bg-green-100 text-green-600 shadow-sm'
+                    : theme === 'dark'
+                    ? 'text-gray-300'
+                    : ''
                 }`}
               >
                 Haftalık
@@ -274,7 +299,13 @@ const Dashboard: React.FC = () => {
               <button
                 onClick={() => handlePeriodChange('monthly')}
                 className={`px-4 py-2 rounded-full text-sm font-medium ${
-                  chartPeriod === 'monthly' ? 'bg-green-100 text-green-600 shadow-sm' : ''
+                  chartPeriod === 'monthly' 
+                    ? theme === 'dark' 
+                      ? 'bg-gray-600 text-green-400 shadow-sm' 
+                      : 'bg-green-100 text-green-600 shadow-sm'
+                    : theme === 'dark'
+                    ? 'text-gray-300'
+                    : ''
                 }`}
               >
                 Aylık
@@ -296,6 +327,7 @@ const Dashboard: React.FC = () => {
             buttonText="Manuel Sulama Başlat"
             onButtonClick={handleManualWatering}
             buttonDisabled={autoWatering}
+            theme={theme}
           />
           <ControlCard
             title="Fan Kontrolü"
@@ -307,6 +339,7 @@ const Dashboard: React.FC = () => {
             valueUnit="%"
             buttonText="Fan Ayarlarını Kaydet"
             onButtonClick={handleFanSettings}
+            theme={theme}
           />
         </div>
       </main>
