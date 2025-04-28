@@ -55,5 +55,93 @@
     "lastNamePlaceholder": "Enter your last name",
     "emailPlaceholder": "Enter your email",
     "phonePlaceholder": "Enter your phone number"
+  },
+  "sidebar": {
+    "home": "Home",
+    "deviceManagement": "Device Management",
+    "reports": "Reports",
+    "settings": "Settings",
+    "user": "User"
+  },
+  "components": {
+    "chart": {
+      "temperature": "Temperature",
+      "humidity": "Humidity",
+      "co2": "CO2",
+      "temperatureUnit": "°C",
+      "humidityUnit": "%",
+      "co2Unit": "PPM"
+    },
+    "controlCard": {
+      "autoMode": "Auto Mode",
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    },
+    "deviceCard": {
+      "deviceStatus": "Device Status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "lastSeen": "Last Seen"
+    },
+    "modal": {
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    },
+    "alert": {
+      "close": "Close"
+    }
+  },
+  "home": {
+    "selectDevice": "Select Device",
+    "lastUpdate": "Last Update",
+    "noData": "No Data",
+    "refresh": "Refresh",
+    "soilMoisture": "Soil Moisture",
+    "optimalLevel": "Optimal Level",
+    "temperature": "Temperature",
+    "co2Level": "CO2 Level",
+    "normalLevel": "Normal Level",
+    "period": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly"
+    },
+    "wateringControl": "Watering Control",
+    "waterAmount": "Water Amount",
+    "startManualWatering": "Start Manual Watering",
+    "fanControl": "Fan Control",
+    "fanSpeed": "Fan Speed",
+    "saveFanSettings": "Save Fan Settings"
+  },
+  "devices": {
+    "description": "You can manage your Arduino devices here",
+    "addDevice": "Add New Device",
+    "editDevice": "Edit Device",
+    "deleteDevice": "Delete Device",
+    "deviceName": "Device Name",
+    "deviceNamePlaceholder": "e.g. Greenhouse 1",
+    "arduinoId": "Arduino ID",
+    "arduinoIdPlaceholder": "e.g. ARD001",
+    "deleteConfirm": "Are you sure you want to delete this device? This action cannot be undone."
+  },
+  "reports": {
+    "title": "Reports",
+    "description": "You can monitor your device data here",
+    "usageDistribution": "Usage Distribution",
+    "weeklyComparison": "Weekly Comparison",
+    "detailedData": "Detailed Data",
+    "lastUpdate": "Last update",
+    "noData": "No data",
+    "temperature": "Temperature",
+    "humidity": "Humidity",
+    "co2": "CO2",
+    "greenhouseStatus": "Greenhouse Status",
+    "systemStatus": "System Status",
+    "apply": "Apply",
+    "period": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly"
+    }
   }
 } 

@@ -49,6 +49,7 @@ const Alert: React.FC<AlertProps> = ({ type, message, onClose, theme, duration =
               ? 'hover:bg-green-800'
               : 'hover:bg-red-800'
           }`}
+          aria-label={t('components.alert.close')}
         >
           <i className="ri-close-line"></i>
         </button>

@@ -6,10 +6,12 @@ import Input from '../components/Input';
 import Modal from '../components/Modal';
 import DeviceCard from '../components/DeviceCard';
 import { useTheme } from '../contexts/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const Devices: React.FC = () => {
   const { devices, addDevice, deleteDevice, updateDeviceStatus, updateDeviceName } = useDevices();
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const [showAddDevice, setShowAddDevice] = useState(false);
   const [showEditDevice, setShowEditDevice] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -78,13 +80,13 @@ const Devices: React.FC = () => {
                 <i className="ri-device-line text-primary text-2xl"></i>
               </div>
               <div>
-                <h1 className={`text-2xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Cihaz Yönetimi</h1>
-                <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Arduino cihazlarınızı buradan yönetebilirsiniz</p>
+                <h1 className={`text-2xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{t('sidebar.deviceManagement')}</h1>
+                <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>{t('devices.description')}</p>
               </div>
             </div>
             <Button onClick={() => setShowAddDevice(true)}>
               <i className="ri-add-line mr-2"></i>
-              <span>Yeni Cihaz Ekle</span>
+              <span>{t('devices.addDevice')}</span>
             </Button>
           </div>
         </div>
@@ -92,7 +94,7 @@ const Devices: React.FC = () => {
         <Modal
           isOpen={showAddDevice}
           onClose={() => setShowAddDevice(false)}
-          title="Yeni Arduino Cihazı Ekle"
+          title={t('devices.addDevice')}
           footer={{
             onCancel: () => setShowAddDevice(false),
             onConfirm: handleAddDevice
@@ -101,15 +103,15 @@ const Devices: React.FC = () => {
         >
           <div className="space-y-4">
             <Input
-              label="Cihaz Adı"
-              placeholder="Örn: Sera 1"
+              label={t('devices.deviceName')}
+              placeholder={t('devices.deviceNamePlaceholder')}
               value={newDeviceName}
               onChange={(e) => setNewDeviceName(e.target.value)}
               theme={theme}
             />
             <Input
-              label="Arduino ID"
-              placeholder="Örn: ARD001"
+              label={t('devices.arduinoId')}
+              placeholder={t('devices.arduinoIdPlaceholder')}
               value={newDeviceId}
               onChange={(e) => setNewDeviceId(e.target.value)}
               theme={theme}
@@ -123,7 +125,7 @@ const Devices: React.FC = () => {
             setShowEditDevice(false);
             setEditingDevice(null);
           }}
-          title="Cihaz Düzenle"
+          title={t('devices.editDevice')}
           footer={{
             onCancel: () => {
               setShowEditDevice(false);
@@ -135,14 +137,14 @@ const Devices: React.FC = () => {
         >
           <div className="space-y-4">
             <Input
-              label="Cihaz Adı"
-              placeholder="Örn: Sera 1"
+              label={t('devices.deviceName')}
+              placeholder={t('devices.deviceNamePlaceholder')}
               value={newDeviceName}
               onChange={(e) => setNewDeviceName(e.target.value)}
               theme={theme}
             />
-            <div className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-              Arduino ID: {editingDevice?.arduinoId}
+            <div className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
+              {t('devices.arduinoId')}: {editingDevice?.arduinoId}
             </div>
           </div>
         </Modal>
@@ -153,7 +155,7 @@ const Devices: React.FC = () => {
             setShowDeleteConfirm(false);
             setDeviceToDelete(null);
           }}
-          title="Cihazı Sil"
+          title={t('devices.deleteDevice')}
           footer={{
             onCancel: () => {
               setShowDeleteConfirm(false);
@@ -165,7 +167,7 @@ const Devices: React.FC = () => {
           theme={theme}
         >
           <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
-            Bu cihazı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.
+            {t('devices.deleteConfirm')}
           </p>
         </Modal>
 
@@ -187,7 +189,7 @@ const Devices: React.FC = () => {
                   onClick={() => openEditModal(device)}
                   className={`p-2 rounded-lg ${
                     theme === 'dark' 
-                      ? 'text-gray-400 hover:text-white hover:bg-gray-700' 
+                      ? 'text-gray-300 hover:text-white hover:bg-gray-700' 
                       : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
                   } transition-colors`}
                 >

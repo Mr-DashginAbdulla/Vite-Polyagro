@@ -5,6 +5,7 @@ import StatCard from '../components/StatCard';
 import ControlCard from '../components/ControlCard';
 import { useDevices } from '../contexts/DeviceContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface Greenhouse {
   id: string;
@@ -19,9 +20,10 @@ interface ReportData {
   time: string[];
 }
 
-const Dashboard: React.FC = () => {
+const Home: React.FC = () => {
   const { devices, updateDeviceData } = useDevices();
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const [autoWatering, setAutoWatering] = useState(true);
   const [waterAmount, setWaterAmount] = useState(50);
   const [fanStatus, setFanStatus] = useState(false);
@@ -191,7 +193,9 @@ const Dashboard: React.FC = () => {
                       theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-200'
                     } border rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer text-base font-medium`}
                   >
-                    <span className={theme === 'dark' ? 'text-white' : 'text-gray-900'}>{selectedDevice?.name || 'Cihaz Seçin'}</span>
+                    <span className={theme === 'dark' ? 'text-white' : 'text-gray-900'}>
+                      {selectedDevice?.name || t('home.selectDevice')}
+                    </span>
                     <i className="ri-arrow-down-s-line text-lg"></i>
                   </button>
                   {showDropdown && (
@@ -217,13 +221,15 @@ const Dashboard: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} mt-1.5`}>Son güncelleme: {selectedDevice?.lastSeen || 'Veri yok'}</p>
+                <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} mt-1.5`}>
+                  {t('home.lastUpdate')}: {selectedDevice?.lastSeen || t('home.noData')}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-4">
               <button className="px-4 py-2.5 bg-green-600 text-white rounded-lg flex items-center gap-2 hover:bg-green-700 transition-all active:scale-95">
                 <i className="ri-refresh-line text-lg"></i>
-                <span className="font-medium">Yenile</span>
+                <span className="font-medium">{t('home.refresh')}</span>
               </button>
             </div>
           </div>
@@ -231,11 +237,11 @@ const Dashboard: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <StatCard
-            title="Toprak Nemi"
+            title={t('home.soilMoisture')}
             value={`${selectedDevice?.data?.soilMoisture || 0}%`}
             icon="ri-water-flash-line"
             iconColor="text-blue-500"
-            description="Optimal seviyede"
+            description={t('home.optimalLevel')}
             progress={{
               value: selectedDevice?.data?.soilMoisture || 0,
               color: '#3b82f6'
@@ -243,7 +249,7 @@ const Dashboard: React.FC = () => {
             theme={theme}
           />
           <StatCard
-            title="Sıcaklık"
+            title={t('home.temperature')}
             value={`${selectedDevice?.data?.temperature || 0}°C`}
             icon="ri-temp-hot-line"
             iconColor="text-orange-500"
@@ -254,11 +260,11 @@ const Dashboard: React.FC = () => {
             theme={theme}
           />
           <StatCard
-            title="CO2 Seviyesi"
+            title={t('home.co2Level')}
             value={`${selectedDevice?.data?.co2 || 0} PPM`}
             icon="ri-cloud-line"
             iconColor="text-purple-500"
-            description="Normal seviyede"
+            description={t('home.normalLevel')}
             theme={theme}
           />
         </div>
@@ -280,7 +286,7 @@ const Dashboard: React.FC = () => {
                     : ''
                 }`}
               >
-                Günlük
+                {t('home.period.daily')}
               </button>
               <button
                 onClick={() => handlePeriodChange('weekly')}
@@ -294,7 +300,7 @@ const Dashboard: React.FC = () => {
                     : ''
                 }`}
               >
-                Haftalık
+                {t('home.period.weekly')}
               </button>
               <button
                 onClick={() => handlePeriodChange('monthly')}
@@ -308,7 +314,7 @@ const Dashboard: React.FC = () => {
                     : ''
                 }`}
               >
-                Aylık
+                {t('home.period.monthly')}
               </button>
             </div>
           </div>
@@ -317,27 +323,27 @@ const Dashboard: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ControlCard
-            title="Sulama Kontrolü"
+            title={t('home.wateringControl')}
             isEnabled={autoWatering}
             onToggle={handleWateringChange}
             value={waterAmount}
             onValueChange={handleWaterAmountChange}
-            valueLabel="Su Miktarı"
+            valueLabel={t('home.waterAmount')}
             valueUnit="%"
-            buttonText="Manuel Sulama Başlat"
+            buttonText={t('home.startManualWatering')}
             onButtonClick={handleManualWatering}
             buttonDisabled={autoWatering}
             theme={theme}
           />
           <ControlCard
-            title="Fan Kontrolü"
+            title={t('home.fanControl')}
             isEnabled={fanStatus}
             onToggle={handleFanStatusChange}
             value={fanSpeed}
             onValueChange={handleFanSpeedChange}
-            valueLabel="Fan Hızı"
+            valueLabel={t('home.fanSpeed')}
             valueUnit="%"
-            buttonText="Fan Ayarlarını Kaydet"
+            buttonText={t('home.saveFanSettings')}
             onButtonClick={handleFanSettings}
             theme={theme}
           />
@@ -347,4 +353,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard; 
+export default Home; 

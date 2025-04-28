@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import { ThemeType } from '../contexts/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface ControlCardProps {
   title: string;
@@ -30,12 +31,15 @@ const ControlCard: React.FC<ControlCardProps> = ({
   theme
 }) => {
   const { theme: contextTheme } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-6`}>
       <h3 className={`font-medium mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{title}</h3>
       <div className="flex items-center justify-between mb-4">
-        <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>Otomatik Mod</span>
+        <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
+          {t('components.controlCard.autoMode')}
+        </span>
         <label className="relative inline-flex items-center cursor-pointer">
           <input 
             type="checkbox" 

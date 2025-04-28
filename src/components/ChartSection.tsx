@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as echarts from 'echarts';
+import { useTranslation } from 'react-i18next';
 
 interface ChartSectionProps {
   period: 'daily' | 'weekly' | 'monthly';
@@ -25,6 +26,7 @@ interface ChartSectionProps {
 const ChartSection: React.FC<ChartSectionProps> = ({ period, data }) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const [chart, setChart] = useState<echarts.ECharts | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (chartRef.current && !chart) {
@@ -57,15 +59,16 @@ const ChartSection: React.FC<ChartSectionProps> = ({ period, data }) => {
             let result = params[0].axisValue + '<br/>';
             params.forEach((param: any) => {
               const value = param.value;
-              const unit = param.seriesName === 'Sıcaklık' ? '°C' : 
-                          param.seriesName === 'Nem' ? '%' : 'PPM';
+              const unit = param.seriesName === t('components.chart.temperature') ? t('components.chart.temperatureUnit') : 
+                          param.seriesName === t('components.chart.humidity') ? t('components.chart.humidityUnit') : 
+                          t('components.chart.co2Unit');
               result += `${param.marker} ${param.seriesName}: ${value}${unit}<br/>`;
             });
             return result;
           }
         },
         legend: {
-          data: ['Sıcaklık', 'Nem', 'CO2'],
+          data: [t('components.chart.temperature'), t('components.chart.humidity'), t('components.chart.co2')],
           bottom: 0,
           textStyle: {
             color: '#374151',
@@ -94,7 +97,7 @@ const ChartSection: React.FC<ChartSectionProps> = ({ period, data }) => {
         },
         yAxis: [{
           type: 'value' as const,
-          name: 'Sıcaklık (°C) / Nem (%)',
+          name: `${t('components.chart.temperature')} (${t('components.chart.temperatureUnit')}) / ${t('components.chart.humidity')} (${t('components.chart.humidityUnit')})`,
           nameTextStyle: {
             color: '#374151',
             fontSize: 13,
@@ -118,7 +121,7 @@ const ChartSection: React.FC<ChartSectionProps> = ({ period, data }) => {
         },
         {
           type: 'value' as const,
-          name: 'CO2 (PPM)',
+          name: `${t('components.chart.co2')} (${t('components.chart.co2Unit')})`,
           nameTextStyle: {
             color: '#374151',
             fontSize: 13,
@@ -139,7 +142,7 @@ const ChartSection: React.FC<ChartSectionProps> = ({ period, data }) => {
           }
         }],
         series: [{
-          name: 'Sıcaklık',
+          name: t('components.chart.temperature'),
           type: 'line',
           smooth: true,
           data: chartData.temperature,
@@ -158,7 +161,7 @@ const ChartSection: React.FC<ChartSectionProps> = ({ period, data }) => {
           symbol: 'none'
         },
         {
-          name: 'Nem',
+          name: t('components.chart.humidity'),
           type: 'line',
           smooth: true,
           data: chartData.humidity,
@@ -177,7 +180,7 @@ const ChartSection: React.FC<ChartSectionProps> = ({ period, data }) => {
           symbol: 'none'
         },
         {
-          name: 'CO2',
+          name: t('components.chart.co2'),
           type: 'line',
           smooth: true,
           yAxisIndex: 1,
@@ -213,7 +216,7 @@ const ChartSection: React.FC<ChartSectionProps> = ({ period, data }) => {
       window.removeEventListener('resize', handleResize);
       chart?.dispose();
     };
-  }, [chart, period, data]);
+  }, [chart, period, data, t]);
 
   return (
     <div className="bg-white rounded-lg shadow p-6 mb-6">

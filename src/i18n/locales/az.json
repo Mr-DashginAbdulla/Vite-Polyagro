@@ -57,5 +57,93 @@
     "lastNamePlaceholder": "Soyadınızı daxil edin",
     "emailPlaceholder": "E-poçtunuzu daxil edin",
     "phonePlaceholder": "Telefon nömrənizi daxil edin"
+  },
+  "sidebar": {
+    "home": "Ana Səhifə",
+    "deviceManagement": "Cihaz İdarəetməsi",
+    "reports": "Hesabatlar",
+    "settings": "Tənzimləmələr",
+    "user": "İstifadəçi"
+  },
+  "components": {
+    "chart": {
+      "temperature": "Temperatur",
+      "humidity": "Rütubət",
+      "co2": "CO2",
+      "temperatureUnit": "°C",
+      "humidityUnit": "%",
+      "co2Unit": "PPM"
+    },
+    "controlCard": {
+      "autoMode": "Avtomatik Rejim",
+      "confirm": "Təsdiqlə",
+      "cancel": "Ləğv et"
+    },
+    "deviceCard": {
+      "deviceStatus": "Cihaz Statusu",
+      "active": "Aktiv",
+      "inactive": "Passiv",
+      "lastSeen": "Son Görülmə"
+    },
+    "modal": {
+      "confirm": "Təsdiqlə",
+      "cancel": "Ləğv et"
+    },
+    "alert": {
+      "close": "Bağla"
+    }
+  },
+  "home": {
+    "selectDevice": "Cihaz seçin",
+    "lastUpdate": "Son yeniləmə",
+    "noData": "Məlumat yoxdur",
+    "refresh": "Yenilə",
+    "soilMoisture": "Torpaq rütubəti",
+    "optimalLevel": "Optimal səviyyə",
+    "temperature": "Temperatur",
+    "co2Level": "CO2 səviyyəsi",
+    "normalLevel": "Normal səviyyə",
+    "period": {
+      "daily": "Günlük",
+      "weekly": "Həftəlik",
+      "monthly": "Aylıq"
+    },
+    "wateringControl": "Sulama nəzarəti",
+    "waterAmount": "Su miqdarı",
+    "startManualWatering": "Manual sulama başlat",
+    "fanControl": "Fan nəzarəti",
+    "fanSpeed": "Fan sürəti",
+    "saveFanSettings": "Fan parametrlərini saxla"
+  },
+  "devices": {
+    "description": "Arduino cihazlarınızı buradan idarə edə bilərsiniz",
+    "addDevice": "Yeni Cihaz Əlavə Et",
+    "editDevice": "Cihazı Redaktə Et",
+    "deleteDevice": "Cihazı Sil",
+    "deviceName": "Cihaz Adı",
+    "deviceNamePlaceholder": "Məs: İstixana 1",
+    "arduinoId": "Arduino ID",
+    "arduinoIdPlaceholder": "Məs: ARD001",
+    "deleteConfirm": "Bu cihazı silmək istədiyinizə əminsiniz? Bu əməliyyat geri qaytarıla bilməz."
+  },
+  "reports": {
+    "title": "Hesabatlar",
+    "description": "Cihaz məlumatlarınızı buradan izləyə bilərsiniz",
+    "usageDistribution": "İstifadə Paylanması",
+    "weeklyComparison": "Həftəlik Müqayisə",
+    "detailedData": "Ətraflı Məlumatlar",
+    "lastUpdate": "Son yeniləmə",
+    "noData": "Məlumat yoxdur",
+    "temperature": "Temperatur",
+    "humidity": "Rütubət",
+    "co2": "CO2",
+    "greenhouseStatus": "İstixana Statusu",
+    "systemStatus": "Sistem Statusu",
+    "apply": "Tətbiq et",
+    "period": {
+      "daily": "Günlük",
+      "weekly": "Həftəlik",
+      "monthly": "Aylıq"
+    }
   }
 } 

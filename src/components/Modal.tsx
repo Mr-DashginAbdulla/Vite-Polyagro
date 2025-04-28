@@ -1,5 +1,6 @@
 import React from 'react';
 import { ThemeType } from '../contexts/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface ModalProps {
   isOpen: boolean;
@@ -15,6 +16,8 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, footer, theme }) => {
+  const { t } = useTranslation();
+
   if (!isOpen) return null;
 
   return (
@@ -47,7 +50,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, footer,
               } text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm`}
               onClick={footer.onConfirm}
             >
-              Onayla
+              {t('components.modal.confirm')}
             </button>
             <button
               type="button"
@@ -58,7 +61,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, footer,
               } text-base font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm`}
               onClick={footer.onCancel}
             >
-              İptal
+              {t('components.modal.cancel')}
             </button>
           </div>
         </div>

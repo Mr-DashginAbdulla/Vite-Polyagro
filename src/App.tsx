@@ -5,7 +5,7 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { DeviceProvider } from './contexts/DeviceContext';
 import LoginPage from './pages/Login';
-import Dashboard from './pages/Dashboard';
+import Home from './pages/Home';
 import Reports from './pages/Reports';
 import Devices from './pages/Devices';
 import { useAuth } from './contexts/AuthContext';
@@ -26,10 +26,18 @@ const App: React.FC = () => {
               <Routes>
                 <Route path="/login" element={<LoginPage />} />
                 <Route
+                  path="/home"
+                  element={
+                    <PrivateRoute>
+                      <Home />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
                   path="/"
                   element={
                     <PrivateRoute>
-                      <Dashboard />
+                      <Navigate to="/home" />
                     </PrivateRoute>
                   }
                 />

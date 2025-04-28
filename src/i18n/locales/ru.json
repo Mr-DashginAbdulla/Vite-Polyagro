@@ -54,5 +54,93 @@
     "lastNamePlaceholder": "Введите вашу фамилию",
     "emailPlaceholder": "Введите ваш email",
     "confirmPassword": "Подтвердите новый пароль"
+  },
+  "sidebar": {
+    "home": "Главная",
+    "deviceManagement": "Управление устройствами",
+    "reports": "Отчеты",
+    "settings": "Настройки",
+    "user": "Пользователь"
+  },
+  "components": {
+    "chart": {
+      "temperature": "Температура",
+      "humidity": "Влажность",
+      "co2": "CO2",
+      "temperatureUnit": "°C",
+      "humidityUnit": "%",
+      "co2Unit": "PPM"
+    },
+    "controlCard": {
+      "autoMode": "Автоматический режим",
+      "confirm": "Подтвердить",
+      "cancel": "Отмена"
+    },
+    "deviceCard": {
+      "deviceStatus": "Статус устройства",
+      "active": "Активно",
+      "inactive": "Неактивно",
+      "lastSeen": "Последний раз"
+    },
+    "modal": {
+      "confirm": "Подтвердить",
+      "cancel": "Отмена"
+    },
+    "alert": {
+      "close": "Закрыть"
+    }
+  },
+  "home": {
+    "selectDevice": "Выберите устройство",
+    "lastUpdate": "Последнее обновление",
+    "noData": "Нет данных",
+    "refresh": "Обновить",
+    "soilMoisture": "Влажность почвы",
+    "optimalLevel": "Оптимальный уровень",
+    "temperature": "Температура",
+    "co2Level": "Уровень CO2",
+    "normalLevel": "Нормальный уровень",
+    "period": {
+      "daily": "Ежедневно",
+      "weekly": "Еженедельно",
+      "monthly": "Ежемесячно"
+    },
+    "wateringControl": "Управление поливом",
+    "waterAmount": "Количество воды",
+    "startManualWatering": "Начать ручной полив",
+    "fanControl": "Управление вентилятором",
+    "fanSpeed": "Скорость вентилятора",
+    "saveFanSettings": "Сохранить настройки вентилятора"
+  },
+  "devices": {
+    "description": "Здесь вы можете управлять своими устройствами Arduino",
+    "addDevice": "Добавить новое устройство",
+    "editDevice": "Редактировать устройство",
+    "deleteDevice": "Удалить устройство",
+    "deviceName": "Название устройства",
+    "deviceNamePlaceholder": "напр. Теплица 1",
+    "arduinoId": "ID Arduino",
+    "arduinoIdPlaceholder": "напр. ARD001",
+    "deleteConfirm": "Вы уверены, что хотите удалить это устройство? Это действие нельзя отменить."
+  },
+  "reports": {
+    "title": "Отчеты",
+    "description": "Здесь вы можете отслеживать данные ваших устройств",
+    "usageDistribution": "Распределение использования",
+    "weeklyComparison": "Еженедельное сравнение",
+    "detailedData": "Подробные данные",
+    "lastUpdate": "Последнее обновление",
+    "noData": "Нет данных",
+    "temperature": "Температура",
+    "humidity": "Влажность",
+    "co2": "CO2",
+    "greenhouseStatus": "Статус теплицы",
+    "systemStatus": "Статус системы",
+    "apply": "Применить",
+    "period": {
+      "daily": "Ежедневно",
+      "weekly": "Еженедельно",
+      "monthly": "Ежемесячно"
+    }
   }
 } 

@@ -5,6 +5,7 @@ import { useDevices } from '../contexts/DeviceContext';
 import Button from '../components/Button';
 import StatCard from '../components/StatCard';
 import { useTheme } from '../contexts/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface ReportData {
   temperature: number[];
@@ -16,6 +17,7 @@ interface ReportData {
 const Reports: React.FC = () => {
   const { devices } = useDevices();
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const [timeRange, setTimeRange] = useState<'daily' | 'weekly' | 'monthly'>('daily');
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedDevice, setSelectedDevice] = useState<string>('1');
@@ -244,7 +246,7 @@ const Reports: React.FC = () => {
                     } border rounded-lg px-4 py-2.5 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer text-base font-medium`}
                   >
                     <span className={`truncate ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                      {selectedDeviceData?.name || 'Cihaz Seçin'}
+                      {selectedDeviceData?.name || t('home.selectDevice')}
                     </span>
                     <i className="ri-arrow-down-s-line text-lg"></i>
                   </button>
@@ -261,7 +263,7 @@ const Reports: React.FC = () => {
                               setShowDropdown(false);
                             }}
                             className={`block w-full text-left px-4 py-2 ${
-                              theme === 'dark' ? 'text-gray-300 hover:bg-gray-700' : 'hover:bg-gray-100'
+                              theme === 'dark' ? 'text-gray-200 hover:bg-gray-700' : 'hover:bg-gray-100'
                             } cursor-pointer`}
                           >
                             {device.name}
@@ -271,8 +273,8 @@ const Reports: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'} mt-1.5`}>
-                  Son güncelleme: {selectedDeviceData?.lastSeen || 'Veri yok'}
+                <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'} mt-1.5`}>
+                  {t('home.lastUpdate')}: {selectedDeviceData?.lastSeen || t('home.noData')}
                 </p>
               </div>
             </div>
@@ -281,7 +283,7 @@ const Reports: React.FC = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
           <StatCard
-            title="Sıcaklık"
+            title={t('components.chart.temperature')}
             value={`${selectedDeviceData?.data?.temperature || 0}°C`}
             icon="ri-temp-hot-line"
             iconColor={theme === 'dark' ? 'text-blue-400' : 'text-blue-500'}
@@ -289,11 +291,11 @@ const Reports: React.FC = () => {
               value: '+2.5°C',
               type: 'increase'
             }}
-            subtitle="Son 24 saat"
+            subtitle={t('home.period.daily')}
             theme={theme}
           />
           <StatCard
-            title="Nem"
+            title={t('components.chart.humidity')}
             value={`${selectedDeviceData?.data?.humidity || 0}%`}
             icon="ri-water-flash-line"
             iconColor={theme === 'dark' ? 'text-green-400' : 'text-green-500'}
@@ -301,11 +303,11 @@ const Reports: React.FC = () => {
               value: '-3.2%',
               type: 'decrease'
             }}
-            subtitle="Son 24 saat"
+            subtitle={t('home.period.daily')}
             theme={theme}
           />
           <StatCard
-            title="CO₂"
+            title={t('components.chart.co2')}
             value={`${selectedDeviceData?.data?.co2 || 0} PPM`}
             icon="ri-cloud-line"
             iconColor={theme === 'dark' ? 'text-purple-400' : 'text-purple-500'}
@@ -313,15 +315,15 @@ const Reports: React.FC = () => {
               value: '+15 PPM',
               type: 'increase'
             }}
-            subtitle="Son 24 saat"
+            subtitle={t('home.period.daily')}
             theme={theme}
           />
           <StatCard
-            title="Sera Durumu"
-            value={selectedDeviceData?.status === 'active' ? 'Aktif' : 'Pasif'}
+            title={t('reports.greenhouseStatus')}
+            value={selectedDeviceData?.status === 'active' ? t('components.deviceCard.active') : t('components.deviceCard.inactive')}
             icon="ri-plant-line"
             iconColor={theme === 'dark' ? 'text-orange-400' : 'text-orange-500'}
-            subtitle="Sistem Durumu"
+            subtitle={t('reports.systemStatus')}
             theme={theme}
           />
         </div>
@@ -339,11 +341,11 @@ const Reports: React.FC = () => {
                       ? 'bg-gray-600 text-green-400 shadow-sm' 
                       : 'bg-green-100 text-green-600 shadow-sm'
                     : theme === 'dark'
-                    ? 'text-gray-300'
+                    ? 'text-gray-200'
                     : ''
                 }`}
               >
-                Günlük
+                {t('home.period.daily')}
               </button>
               <button
                 onClick={() => setTimeRange('weekly')}
@@ -353,11 +355,11 @@ const Reports: React.FC = () => {
                       ? 'bg-gray-600 text-green-400 shadow-sm' 
                       : 'bg-green-100 text-green-600 shadow-sm'
                     : theme === 'dark'
-                    ? 'text-gray-300'
+                    ? 'text-gray-200'
                     : ''
                 }`}
               >
-                Haftalık
+                {t('home.period.weekly')}
               </button>
               <button
                 onClick={() => setTimeRange('monthly')}
@@ -367,29 +369,29 @@ const Reports: React.FC = () => {
                       ? 'bg-gray-600 text-green-400 shadow-sm' 
                       : 'bg-green-100 text-green-600 shadow-sm'
                     : theme === 'dark'
-                    ? 'text-gray-300'
+                    ? 'text-gray-200'
                     : ''
                 }`}
               >
-                Aylık
+                {t('home.period.monthly')}
               </button>
             </div>
             <div className="flex items-center gap-2">
               <input
                 type="date"
                 className={`px-4 py-2 ${
-                  theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-200'
+                  theme === 'dark' ? 'bg-gray-700 border-gray-600 text-gray-200' : 'bg-white border-gray-200'
                 } border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer`}
               />
-              <span className={theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}>-</span>
+              <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}>-</span>
               <input
                 type="date"
                 className={`px-4 py-2 ${
-                  theme === 'dark' ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-200'
+                  theme === 'dark' ? 'bg-gray-700 border-gray-600 text-gray-200' : 'bg-white border-gray-200'
                 } border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent cursor-pointer`}
               />
             </div>
-            <Button theme={theme}>Uygula</Button>
+            <Button theme={theme}>{t('reports.apply')}</Button>
           </div>
           <div className="chart-container" id="lineChart"></div>
         </div>
@@ -397,14 +399,14 @@ const Reports: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
           <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-4 md:p-6`}>
             <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-              Kullanım Dağılımı
+              {t('reports.usageDistribution')}
             </h3>
             <div className="h-64" id="pieChart"></div>
           </div>
 
           <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-4 md:p-6`}>
             <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-              Haftalık Karşılaştırma
+              {t('reports.weeklyComparison')}
             </h3>
             <div className="h-64" id="barChart"></div>
           </div>
@@ -412,7 +414,7 @@ const Reports: React.FC = () => {
           <div className={`${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow p-4 md:p-6`}>
             <div className="flex justify-between items-center mb-4">
               <h3 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                Detaylı Veriler
+                {t('reports.detailedData')}
               </h3>
               <div className="flex items-center gap-2">
                 <Button variant="icon" theme={theme}>

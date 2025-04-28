@@ -13,10 +13,10 @@ const Sidebar: React.FC = () => {
   const { t } = useTranslation();
 
   const menuItems = [
-    { path: '/', icon: 'ri-dashboard-line', label: 'Kontrol Paneli' },
-    { path: '/devices', icon: 'ri-device-line', label: 'Cihaz Yönetimi' },
-    { path: '/reports', icon: 'ri-file-chart-line', label: 'Raporlar' },
-    { path: '/settings', icon: 'ri-settings-3-line', label: 'Ayarlar' },
+    { path: '/home', icon: 'ri-home-line', label: t('sidebar.home') },
+    { path: '/devices', icon: 'ri-device-line', label: t('sidebar.deviceManagement') },
+    { path: '/reports', icon: 'ri-file-chart-line', label: t('sidebar.reports') },
+    { path: '/settings', icon: 'ri-settings-3-line', label: t('sidebar.settings') },
   ];
 
   const handleLogout = async () => {
@@ -42,7 +42,9 @@ const Sidebar: React.FC = () => {
               />
             </div>
             <div>
-              <h3 className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{currentUser?.displayName || 'Kullanıcı'}</h3>
+              <h3 className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                {currentUser?.displayName || t('sidebar.user')}
+              </h3>
             </div>
           </div>
           <nav className="space-y-2">

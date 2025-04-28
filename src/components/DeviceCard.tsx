@@ -3,6 +3,7 @@ import { Device } from '../contexts/DeviceContext';
 import Button from './Button';
 import Switch from './Switch';
 import { ThemeType } from '../contexts/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface DeviceCardProps {
   device: Device;
@@ -20,6 +21,8 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
   onDelete,
   theme
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={`p-4 rounded-lg shadow-md ${
       theme === 'dark' 
@@ -68,11 +71,13 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
 
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-700">Cihaz Durumu:</span>
+          <span className="text-sm font-medium text-gray-700">
+            {t('components.deviceCard.deviceStatus')}:
+          </span>
           <span className={`text-sm font-medium ${
             device.status === 'active' ? 'text-green-600' : 'text-red-600'
           }`}>
-            {device.status === 'active' ? 'Aktif' : 'Pasif'}
+            {device.status === 'active' ? t('components.deviceCard.active') : t('components.deviceCard.inactive')}
           </span>
         </div>
         <Switch
@@ -84,7 +89,7 @@ const DeviceCard: React.FC<DeviceCardProps> = ({
       </div>
 
       <div className="flex items-center justify-between text-sm">
-        <span className="text-gray-500">Son Görülme:</span>
+        <span className="text-gray-500">{t('components.deviceCard.lastSeen')}:</span>
         <span className="font-medium">{device.lastSeen}</span>
       </div>
     </div>
